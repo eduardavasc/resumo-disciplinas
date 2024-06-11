@@ -1,18 +1,30 @@
-import { Flex, Image, Heading, Text } from '@chakra-ui/react';
+import { HStack, useMediaQuery, Box, Flex, Heading, Text} from '@chakra-ui/react';
+import Logo from '../Logo/Logo';
+import Menu from '../Menu/Menu';
+import MenuMobile from '../Menu/MenuMobile';
 
 const Header = () => {
+
+    const [isLargerThanMD] = useMediaQuery('(min-width: 768px)')
+
   return (
-    <Flex p="5" position="sticky" top="0" bgColor="white" boxShadow="xs" zIndex="2">
-    <a href="/">
-      <Flex align="center" gap="3">
-        <Image src="/cat.png" color="gray.500" alt="cute cat" />
+    <Box position={"relative"}>
+
+    <HStack
+    bgColor='grey.400'
+    w="full"
+    p = {{base: "1rem 3rem", md: "1rem 8rem"}}
+    justifyContent={"space-between"}
+    >
+        <Logo size ="5rem"/>
         <Flex direction="column">
-          <Heading>Your Studies Place</Heading>
-          <Text>Seu espaço para registro de disciplinas</Text>
-        </Flex>
-      </Flex>
-    </a>
-  </Flex>
+            <Heading  >Your Studies Place</Heading>
+            <Text textAlign="center">Seu espaço para registro de disciplinas</Text>
+            </Flex>
+            {isLargerThanMD ? <Menu/> : <MenuMobile/>}
+    </HStack>
+    </Box>
+
 );
 }
 

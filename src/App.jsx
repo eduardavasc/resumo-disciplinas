@@ -2,12 +2,12 @@
 import './App.css';
 import Header from './components/commons/Header'; 
 
-function App() {
+const App = () => {
   return (
     <div>
       <Header />
     </div>
-  );
+  )
 }
 
 export default App;

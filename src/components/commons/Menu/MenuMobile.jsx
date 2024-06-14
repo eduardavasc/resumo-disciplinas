@@ -8,8 +8,10 @@ import {
   DrawerCloseButton, 
   Button, 
   VStack, 
-  useDisclosure 
+  useDisclosure, 
 } from '@chakra-ui/react';
+import NavLink from '../NavLink/NavLink';
+
 
 
 const MenuMobile = () => {
@@ -18,7 +20,7 @@ const MenuMobile = () => {
 
   return (
     <>
-      <Button ref={btnRef} colorScheme='teal' textColor={'black'} onClick={onOpen}>
+      <Button ref={btnRef} colorScheme='teal'  textColor={'white'} onClick={onOpen}>
         Abra para navegar:
       </Button>
 
@@ -34,15 +36,9 @@ const MenuMobile = () => {
           <DrawerHeader>Páginas:</DrawerHeader>
           <DrawerBody>
             <VStack spacing="24px" align="start">
-              <Button >
-                Home
-              </Button>
-              <Button >
-                Cadastrar Disciplina
-              </Button>
-              <Button >
-                Disciplinas Cadastradas
-              </Button>
+            <NavLink href="#" text="Home"/>
+        <NavLink href="#" text="Cadastrar disciplinas"/>
+        <NavLink href="#" text="Discilinas cadastradas"/>
             </VStack>
           </DrawerBody>
         </DrawerContent>

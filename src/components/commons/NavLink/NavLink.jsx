@@ -6,7 +6,7 @@ const NavLink = ({href, text}) => {
 
         <Box>
             <Link href={href}>
-            <Text color="black.800">{text}</Text>
+            <Text fontWeight="bold" color="black.800">{text}</Text>
             </Link>
         </Box>
     );

@@ -3,9 +3,10 @@ import NavLink from "../NavLink/NavLink";
 
 const Menu = (direction) => {
     return(
-        <Flex gap="5rem" flexDir={direction} >
+        <Flex gap="2rem" flexDir={direction} >
         <NavLink href="#" text="Home"/>
-        <NavLink href="#" text="Cadastro de disciplinas"/>
+        <NavLink href="#" text="Cadastrar disciplinas"/>
+        <NavLink href="#" text="Disciplinas cadastradas"/>
         </Flex>
     )
 }

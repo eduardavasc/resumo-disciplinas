@@ -1,11 +1,13 @@
 // src/App.jsx
 import './App.css';
-import Header from './components/commons/Header'; 
+import CustomCard from './components/CustomCard/CustomCard';
+import Navbar from './components/NavBar';
 
 const App = () => {
   return (
     <div>
-      <Header />
+      <Navbar/>
+      <CustomCard/>
     </div>
   )
 }

@@ -16,14 +16,14 @@ import { EditIcon } from "@chakra-ui/icons";
 const CustomCard = () => {
   return (
     <Flex
-      bgColor={"orange"}
+      bgColor={"white"}
       height="50vh"
       justifyContent="center"
       alignItems="center"
       textAlign="center"
     >
       <SimpleGrid spacing={"1"} columns={1}>
-        <Card bgColor={"orange.100"}>
+        <Card bgColor={"teal.100"}>
           <CardHeader>
             <Heading size="md">P.O.O</Heading>
         
@@ -53,7 +53,7 @@ const CustomCard = () => {
               style={{
                 width: 200,
               }}
-              colorScheme="orange"
+              colorScheme="teal"
             >
               {" "}
               <EditIcon />{" "}

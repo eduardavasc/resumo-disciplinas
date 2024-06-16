@@ -4,7 +4,7 @@ const Logo = () => {
     
     return(
         <Link href="/" display="block">
-            <Image borderRadius='full' boxSize='160px' src='/cat.png' alt='Cute Cat' />
+            <Image borderRadius='full' boxSize='100px' src='/techcat.png' alt='Cute Cat' />
         </Link>
         
     );

@@ -13,10 +13,12 @@ import {
 } from "@chakra-ui/react";
 import Logo from "../commons/Logo/Logo";
 import NavLink from "./NavLink";
-import { Links } from "./links";
+
+
 
 export default function Navbar() {
   const { isOpen, onOpen, onClose } = useDisclosure();
+
 
   return (
     <>
@@ -38,13 +40,11 @@ export default function Navbar() {
               spacing={4}
               display={{ base: "none", md: "flex" }}
             >
-              {Links.map((link) => (
-                <NavLink key={link}>
+              <NavLink page='cadastrar-disciplina'>
                   <Text color={"white"} fontWeight="bold">
-                    {link}
+                    Cadastrar Disciplinas
                   </Text>
                 </NavLink>
-              ))}
             </HStack>
           </HStack>
           <Flex alignItems={"center"}>
@@ -78,9 +78,11 @@ export default function Navbar() {
         {isOpen ? (
           <Box pb={4} display={{ md: "none" }}>
             <Stack as={"nav"} spacing={4}>
-              {Links.map((link) => (
-                <NavLink key={link}>{link}</NavLink>
-              ))}
+            <NavLink page='cadastrar-disciplina'>
+                  <Text color={"white"} fontWeight="bold">
+                    Cadastrar Disciplinas
+                  </Text>
+                </NavLink>
             </Stack>
           </Box>
         ) : null}

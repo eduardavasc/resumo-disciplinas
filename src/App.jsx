@@ -1,13 +1,14 @@
 // src/App.jsx
 import './App.css';
-import CustomCard from './components/CustomCard/CustomCard';
+import CustomForm from './components/CustomForm/CustomForm';
 import Navbar from './components/NavBar';
+
 
 const App = () => {
   return (
     <div>
       <Navbar/>
-      <CustomCard/>
+      <CustomForm/>
     </div>
   )
 }

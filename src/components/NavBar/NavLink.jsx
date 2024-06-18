@@ -1,9 +1,13 @@
-import { Box, useColorModeValue } from '@chakra-ui/react';
+import { useColorModeValue, Link as ChakraLink } from '@chakra-ui/react';
+import { Link } from 'react-router-dom';
 
-const NavLink = ({ children }) => {
+// eslint-disable-next-line react/prop-types
+const NavLink = ({ children, page }) => {
+  
   return (
-    <Box
-      as="a"
+    <ChakraLink
+      as={Link}
+      to={page}
       px={2}
       py={1}
       rounded={'md'}
@@ -11,9 +15,10 @@ const NavLink = ({ children }) => {
         textDecoration: 'none',
         bg: useColorModeValue('teal.700', 'teal.200'),
       }}
-      href={'#'}>
+
+      >
       {children}
-    </Box>
+    </ChakraLink>
   );
 };
 

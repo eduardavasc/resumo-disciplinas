@@ -1,21 +1,33 @@
-import { useForm } from "react-hook-form";
+/* eslint-disable react/prop-types */
 import {
-  FormErrorMessage,
-  FormLabel,
-  FormControl,
-  Input,
+  Box,
   Button,
   Flex,
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
+  Input,
+  Text
 } from "@chakra-ui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import * as yup from "yup";
+import { useDisciplinas } from "../../hooks/useDisciplinas";
 
-
-const schema = yup.object({
-  nome: yup.string().min(4, 'Mínimo de 4 caracteres.').required('Campo obrigatório.'),
-  descricao: yup.string().min(4, 'Mínimo de 4 caracteres.').required('Campo obrigatório.'),
-  createDate: yup.string().required('Campo obrigatório.'),
-}).required();
+const schema = yup
+  .object({
+    nome: yup
+      .string()
+      .min(4, "Mínimo de 4 caracteres.")
+      .required("Campo obrigatório."),
+    descricao: yup
+      .string()
+      .min(4, "Mínimo de 4 caracteres.")
+      .required("Campo obrigatório."),
+    createDate: yup.string().required("Campo obrigatório."),
+  })
+  .required();
 
 const CustomForm = () => {
   const {
@@ -24,23 +36,35 @@ const CustomForm = () => {
     formState: { errors, isSubmitting },
   } = useForm({
     resolver: yupResolver(schema),
-    mode: 'onBlur'
+    mode: "onBlur",
   });
+  const navigate = useNavigate()
+  const {disciplinas, setDisciplinas} = useDisciplinas()
 
   function onSubmit(values) {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        alert(JSON.stringify(values, null, 2));
-        resolve();
-      }, 3000);
-    });
-  }
+      const disciplinaAdd = values
+      disciplinas.push(disciplinaAdd)
+      setDisciplinas(disciplinas)
 
+      alert('Disciplina cadastrada com sucesso!')
+
+      navigate('/')
+  }
+  
   return (
-    <Flex justifyContent="center" alignItems="center" height="100vh">
+    <Flex justifyContent="center" alignItems="center" height="100vh" bg="teal.50">
+       <Box 
+        bg="white" 
+        p={8} 
+        borderRadius="md" 
+        boxShadow="md"
+        width="400px"
+        textAlign={'center'}
+      >
       <form onSubmit={handleSubmit(onSubmit)}>
         <FormControl isInvalid={errors.nome}>
-          <FormLabel htmlFor="nome">Nome da disciplina:</FormLabel>
+         <Box marginBottom={4}><Text fontSize={'xx-large'} fontWeight={'bold'} >Cadastrar disciplinas</Text></Box> 
+          <FormLabel htmlFor="nome">Nome da disciplinas:</FormLabel>
           <Input
             id="nome"
             placeholder="Nome"
@@ -56,7 +80,7 @@ const CustomForm = () => {
         </FormControl>
 
         <FormControl isInvalid={errors.descricao} mt={4}>
-          <FormLabel htmlFor="descricao">Descrição da disciplina:</FormLabel>
+          <FormLabel htmlFor="descricao">Descrição da disciplinas:</FormLabel>
           <Input
             id="descricao"
             placeholder="Descrição"
@@ -72,7 +96,9 @@ const CustomForm = () => {
         </FormControl>
 
         <FormControl isInvalid={errors.createDate} mt={4}>
-          <FormLabel htmlFor="createDate">Data de criação da disciplina:</FormLabel>
+          <FormLabel htmlFor="createDate">
+            Data de criação da disciplinas:
+          </FormLabel>
           <Input
             id="createDate"
             type="date"
@@ -88,12 +114,21 @@ const CustomForm = () => {
           </FormErrorMessage>
         </FormControl>
 
-        <Button mt={4} colorScheme="teal" isLoading={isSubmitting} type="submit">
-          Enviar
-        </Button>
+        <Flex justifyContent="center">
+          <Button
+            mt={4}
+            colorScheme="teal"
+            isLoading={isSubmitting}
+            type="submit"
+          >
+            Enviar
+          </Button>
+        </Flex>
+
       </form>
+      </Box>
     </Flex>
   );
-}
+};
 
 export default CustomForm;

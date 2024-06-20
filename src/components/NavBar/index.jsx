@@ -40,9 +40,9 @@ export default function Navbar() {
               spacing={4}
               display={{ base: "none", md: "flex" }}
             >
-              <NavLink page='cadastrar-disciplina'>
+              <NavLink page='cadastrar-disciplinas'>
                   <Text color={"white"} fontWeight="bold">
-                    Cadastrar Disciplinas
+                    Cadastrar disciplinas
                   </Text>
                 </NavLink>
             </HStack>
@@ -78,9 +78,9 @@ export default function Navbar() {
         {isOpen ? (
           <Box pb={4} display={{ md: "none" }}>
             <Stack as={"nav"} spacing={4}>
-            <NavLink page='cadastrar-disciplina'>
+            <NavLink page='cadastrar-disciplinas'>
                   <Text color={"white"} fontWeight="bold">
-                    Cadastrar Disciplinas
+                    Cadastrar disciplinas
                   </Text>
                 </NavLink>
             </Stack>

@@ -1,14 +1,14 @@
-import { Image, Link} from '@chakra-ui/react';
+import { Box, Image } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
 
 const Logo = () => {
-    
-    return(
-        <Link href="/" display="block">
-            <Image borderRadius='full' boxSize='100px' src='/techcat.png' alt='Cute Cat' />
-        </Link>
-        
+    const navigate = useNavigate();
+  
+    return (
+      <Box display="block" onClick={() => navigate('/')} cursor="pointer">
+        <Image borderRadius="full" boxSize="100px" src="/techcat.png" alt="Cute Cat" />
+      </Box>
     );
- 
-};
+  };
 
 export default Logo;

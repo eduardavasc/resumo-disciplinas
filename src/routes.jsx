@@ -2,7 +2,8 @@ import { BrowserRouter, Routes, Route, Outlet } from 'react-router-dom';
 import Navbar
  from './components/NavBar';
 import Home from './pages/Home';
-import CadastrarDisciplina from './pages/CadastrarDisciplina/CadastrarDisciplina';
+import CadastrarDisciplinas from './pages/CadastrarDisciplina/CadastrarDisciplina';
+// eslint-disable-next-line react/prop-types
 const AppRoutes = () => (
     <>
       <BrowserRouter>
@@ -17,7 +18,7 @@ const AppRoutes = () => (
             }
           >
             <Route element={<Home/>} path="/"/>
-            <Route element={<CadastrarDisciplina/>} path="/cadastrar-disciplina"/>
+            <Route element={<CadastrarDisciplinas/>} path="/cadastrar-disciplinas"/>
           </Route>
         </Routes>
       </BrowserRouter>

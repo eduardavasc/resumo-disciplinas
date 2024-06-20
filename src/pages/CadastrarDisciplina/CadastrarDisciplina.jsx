@@ -1,18 +1,8 @@
-import { Flex } from "@chakra-ui/react"
-import CustomForm from "../../components/CustomForm/CustomForm"
+/* eslint-disable react/prop-types */
+import CustomForm from "../../components/CustomForm/CustomForm";
 
+const CadastrarDisciplinas = () => {
+  return <CustomForm />;
+};
 
-const CadastrarDisciplina = () => {
-  return (
-    <Flex 
-    bgColor={"white"}
-    height="50vh"
-    justifyContent="center"
-    alignItems="center"
-    textAlign="center">
-        <CustomForm/>
-    </Flex>
-  )
-}
-
-export default CadastrarDisciplina
+export default CadastrarDisciplinas;

@@ -55,7 +55,7 @@ export default function Navbar() {
           direction={'row'}
           spacing={6}>
           <Button as={'a'} fontSize={'sm'} fontWeight={400} variant={'link'} href={'#'} color={'white'}>
-            Sign In
+            Entrar
           </Button>
           <Button
             as={'a'}
@@ -68,7 +68,7 @@ export default function Navbar() {
             _hover={{
               bg: 'teal.700',
             }}>
-            Sign Up
+            Cadastre-se
           </Button>
         </Stack>
             </Menu>

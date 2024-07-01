@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import {
   Box,
@@ -14,6 +15,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import { useDisciplinas } from "../../hooks/useDisciplinas";
+import { criarDisciplina } from "../../services/disciplinasService";
 
 const schema = yup
   .object({
@@ -41,10 +43,11 @@ const CustomForm = () => {
   const navigate = useNavigate()
   const {disciplinas, setDisciplinas} = useDisciplinas()
 
-  function onSubmit(values) {
+  async function onSubmit(values) {
       const disciplinaAdd = values
-      disciplinas.push(disciplinaAdd)
-      setDisciplinas(disciplinas)
+      await criarDisciplina(disciplinaAdd)
+      // disciplinas.push(disciplinaAdd)
+      // setDisciplinas(disciplinas)
 
       alert('Disciplina cadastrada com sucesso!')
 

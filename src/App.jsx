@@ -1,13 +1,17 @@
 import "./App.css";
 import AppRoutes from "./routes";
 import { DisciplinaProvider } from "./hooks/useDisciplinas";
+import { AuthProvider } from "./hooks/useAuth";
 
 const App = () => {
   
   return (
-    <DisciplinaProvider>
-    <AppRoutes />
-    </DisciplinaProvider>
+    <AuthProvider>
+      <DisciplinaProvider>
+        <AppRoutes />
+      </DisciplinaProvider>
+    </AuthProvider>
+    
   );
 };
 

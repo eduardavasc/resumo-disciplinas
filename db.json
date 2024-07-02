@@ -13,14 +13,40 @@
       "email": "eduarda@gen.com",
       "senha": "eduarda123",
       "dataNascimento": "2000-09-16"
+    },
+    {
+      "id": "3b79",
+      "nome": "oioi",
+      "email": "eduarda@gen.com",
+      "senha": "rrgrjhtj",
+      "dataNascimento": "2024-07-16"
+    },
+    {
+      "id": "e2a9",
+      "nome": "Madxux",
+      "email": "madxux@gen.com",
+      "senha": "fdgrge",
+      "dataNascimento": "2024-07-03"
     }
   ],
   "disciplinas": [
     {
       "id": "f64d",
       "nome": "Madxux",
-      "descricao": "Tema pelo cadastrar tema",
+      "descricao": "Tema pelo cadastrar tema!",
       "createDate": "2024-06-27"
+    },
+    {
+      "id": "910c",
+      "nome": "P.O.O",
+      "descricao": "DESCRICIONE 6",
+      "createDate": "2024-07-02"
+    },
+    {
+      "id": "d9ff",
+      "nome": "p.o.o",
+      "descricao": "Programação orientada a objetos. ",
+      "createDate": "2024-07-09"
     }
   ]
 }

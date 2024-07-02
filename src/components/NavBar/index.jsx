@@ -10,7 +10,8 @@ import {
   Stack,
   Text,
   useColorModeValue,
-  useDisclosure
+  useDisclosure,
+  useToast
 } from "@chakra-ui/react";
 import Logo from "../commons/Logo/Logo";
 import NavLink from "./NavLink";
@@ -22,6 +23,7 @@ export default function Navbar() {
   const { usuario, setUsuario } = useAuth()
 
   const navigate = useNavigate()
+  const toast = useToast();
 
   const handleLogout = () => {
     setUsuario({
@@ -29,7 +31,12 @@ export default function Navbar() {
       nome: '',
       logado: false
     })
-    alert('Usuário deslogado com sucesso')
+
+    toast({
+      status: 'success',
+      title: 'Usuário deslogado com sucesso!',
+    });
+    
     navigate('/')
   }
 

@@ -16,11 +16,13 @@ import {
   FormHelperText,
   InputRightElement,
   FormErrorMessage,
+  useToast,
+  FormLabel
 } from "@chakra-ui/react";
 import { FaUserAlt, FaLock } from "react-icons/fa";
 import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as Yup from "yup";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 import { useAuth } from "../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import { recuperarUsuario } from "../../services/userService";
@@ -28,48 +30,56 @@ import { recuperarUsuario } from "../../services/userService";
 const CFaUserAlt = chakra(FaUserAlt);
 const CFaLock = chakra(FaLock);
 
-const validationSchema = Yup.object().shape({
-  email: Yup.string().email("Email inválido").required("Email é obrigatório"),
-  senha: Yup.string().required("Senha é obrigatória"),
+const validationSchema = z.object({
+  email: z.string().email("Email inválido").min(1, "Email é obrigatório"),
+  senha: z.string().min(1, "Senha é obrigatória")
 });
 
 const LogarUsuario = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [loading, setLoading] = useState(false)
-  const {setUsuario} = useAuth()
+  const [loading, setLoading] = useState(false);
+  const { setUsuario } = useAuth();
 
   const navigate = useNavigate();
+  const toast = useToast();
 
   const handleShowClick = () => setShowPassword(!showPassword);
 
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, touchedFields },
   } = useForm({
-    resolver: yupResolver(validationSchema),
+    resolver: zodResolver(validationSchema),
+    mode: "onBlur"
   });
 
   const onSubmit = async (data) => {
     try {
-      setLoading(true)
-      const usuario = await recuperarUsuario(data)
+      setLoading(true);
+      const usuario = await recuperarUsuario(data);
       if (usuario) {
         setUsuario({
           email: usuario.email,
           nome: usuario.nome,
           logado: true
-        })
-        setLoading(false)
-        alert('Usuário logado com sucesso')
-        navigate('/')
+        });
+        setLoading(false);
+        toast({
+          status: 'success',
+          title: 'Usuário logado com sucesso.',
+        });
+        navigate('/');
       } else {
-        setLoading(false)
-        alert('Usuário não encontrado')
+        setLoading(false);
+        toast({
+          status: 'error',
+          title: 'Usuário não encontrado.',
+        });
       }
     } catch (e) {
-      setLoading(false)
-      alert(e.message)
+      setLoading(false);
+      alert(e.message);
     }
   };
 
@@ -99,7 +109,8 @@ const LogarUsuario = () => {
               boxShadow="md"
               borderRadius={10}
             >
-              <FormControl isInvalid={errors.email}>
+              <FormControl isInvalid={touchedFields.email && errors.email}>
+                <FormLabel>E-mail:</FormLabel>
                 <InputGroup>
                   <InputLeftElement
                     pointerEvents="none"
@@ -107,15 +118,18 @@ const LogarUsuario = () => {
                   />
                   <Input
                     type="email"
-                    placeholder="Email"
+                    placeholder="E-mail"
                     {...register("email")}
                   />
                 </InputGroup>
-                <FormErrorMessage>
-                  {errors.email && errors.email.message}
-                </FormErrorMessage>
+                {touchedFields.email && errors.email && (
+                  <FormErrorMessage>
+                    {errors.email.message}
+                  </FormErrorMessage>
+                )}
               </FormControl>
-              <FormControl isInvalid={errors.senha}>
+              <FormControl isInvalid={touchedFields.senha && errors.senha}>
+                <FormLabel>Senha:</FormLabel>
                 <InputGroup>
                   <InputLeftElement
                     pointerEvents="none"
@@ -133,9 +147,11 @@ const LogarUsuario = () => {
                     </Button>
                   </InputRightElement>
                 </InputGroup>
-                <FormErrorMessage>
-                  {errors.senha && errors.senha.message}
-                </FormErrorMessage>
+                {touchedFields.senha && errors.senha && (
+                  <FormErrorMessage>
+                    {errors.senha.message}
+                  </FormErrorMessage>
+                )}
                 <FormHelperText textAlign="right">
                   <Link>Esqueceu a senha?</Link>
                 </FormHelperText>
@@ -148,8 +164,9 @@ const LogarUsuario = () => {
                 width="full"
                 isLoading={loading}
                 bg={'teal.500'}
-                    _hover={{
-                      bg: 'teal.700',}}
+                _hover={{
+                  bg: 'teal.700',
+                }}
               >
                 Entrar
               </Button>

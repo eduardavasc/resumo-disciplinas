@@ -12,26 +12,70 @@ import {
   Input,
   Stack,
   Text,
+  useToast
 } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 import { useDisciplinas } from "../../hooks/useDisciplinas";
+import { atualizarDisciplina, recuperarDisciplinas } from "../../services/disciplinasService";
 
 const CustomCard = ({ item, itemIndex }) => {
   const { setDisciplinas } = useDisciplinas();
   const [isEditing, setIsEditing] = useState(false);
   const [descricao, setDescricao] = useState(item.descricao);
+  const toast = useToast();
 
+  // função de atualizar disciplina
+  // recebe o objeto disciplina
+  const submitEdit = async (disciplina) => {
+    // aguarda chamada
+    await atualizarDisciplina(disciplina).then((res) => {
+      // 'res' é o resultado da requisição
+      if (res.ok) {
+        toast({
+          status: 'success',
+          title: 'Disciplina editada com sucesso!',
+        });
+      } else {
+        toast({
+          status: 'error',
+          title: 'Disciplina não pode ser editada, tente mais tarde.',
+        });
+      }
+    }).catch((error) => {
+      // toast de erro!
+    });
+    setIsEditing(false);
+  }
+
+  // função para buscar disciplinas salvas no banco
+  const fetchDisciplinas = async () => {
+    // atribuo as disciplinas salvas no banco à constante
+    const disciplinasDb = await recuperarDisciplinas();
+    // atualizo o nosso estado 'disciplinas' com o que tá no banco
+    setDisciplinas(disciplinasDb);
+  }
+
+  // useEffect que vai ser chamado toda vez que o valor de 'isEditing' mudar
   useEffect(() => {
-    // Atualiza a descrição do item no array de disciplinas quando a descrição local mudar
-    setDisciplinas((prevDisciplinas) =>
-      prevDisciplinas.map((disciplina, index) =>
-        index === itemIndex ? { ...disciplina, descricao } : disciplina
-      )
-    );
-  }, [descricao, itemIndex, setDisciplinas]);
+    // apenas quero buscar as disciplinas do banco quando isEditing for falso
+    if (!isEditing) {
+      fetchDisciplinas()
+    }
+  }, [isEditing]);
 
+
+   // função que lida com o clique do botão de editar
   const handleEditClick = () => {
-    setIsEditing(!isEditing);
+    // valida o estado de isEditing
+    if (isEditing) {
+      // chama a função de atualizar disciplina
+      submitEdit({ ...item, descricao });
+      // define o estado como contrário, nesse caso, false
+      setIsEditing(!isEditing)
+    } else {
+      // caso o valor de isEditing já seja falso, apenas altera o estado
+      setIsEditing(!isEditing);
+    }
   };
 
   const handleDescricaoChange = (e) => {

@@ -19,15 +19,13 @@ import { useDisciplinas } from "../../hooks/useDisciplinas";
 import { criarDisciplina } from "../../services/disciplinasService";
 
 const schema = z.object({
-  nome: z
-    .string()
-    .min(4, "Mínimo de 4 caracteres.")
-    .min("Campo obrigatório."),
-  descricao: z
-    .string()
-    .min(4, "Mínimo de 4 caracteres.")
-    .min("Campo obrigatório."),
-  createDate: z.string().nonempty("Campo obrigatório."),
+  nome: z.string().min(4, 'Mínimo de 4 caracteres.').min('Campo obrigatório.'),
+  descricao: z.string().min(4, 'Mínimo de 4 caracteres.').min('Campo obrigatório.'),
+  createDate: z.string().min('Campo obrigatório.'),
+  codigoDisciplina: z.string().min('Campo obrigatório.'),
+  prerequisitos: z.string().min('Campo obrigatório.'),
+  creditos: z.number().int().positive('Deve ser um número positivo.').nonzero('Campo obrigatório.'),
+  horariosAulas: z.enum(['08:00', '10:00', '14:00', '16:00']).nonempty('Campo obrigatório.'),
 });
 
 const CustomForm = () => {

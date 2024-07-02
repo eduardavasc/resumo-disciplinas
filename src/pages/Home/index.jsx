@@ -67,8 +67,8 @@ const Home = () => {
       textAlign="center"
       p={4}
     >
-      <WelcomeMessage/>
-      {usuario.logado && (
+     
+      {usuario.logado ? (
         <>
           <Flex justifyContent="center" alignItems="center" width="100%" mt={4}>
             <InputGroup maxWidth={"300px"}>
@@ -125,6 +125,8 @@ const Home = () => {
             </Button>
           </Flex>
         </>
+      ) :(     
+        <WelcomeMessage/>
       )}
     </Flex>
   );

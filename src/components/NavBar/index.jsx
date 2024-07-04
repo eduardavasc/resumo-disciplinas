@@ -35,6 +35,8 @@ export default function Navbar() {
     toast({
       status: 'success',
       title: 'Usuário deslogado com sucesso!',
+      duration: 2000,
+      isClosable: true,
     });
     
     navigate('/')

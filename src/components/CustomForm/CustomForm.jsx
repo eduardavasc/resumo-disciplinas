@@ -11,28 +11,45 @@ import {
   Text,
   useToast,
   Select,
+  Toast,
 } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { z } from "zod";
 import { useDisciplinas } from "../../hooks/useDisciplinas";
+import { useAuth } from "../../hooks/useAuth";
 import { criarDisciplina } from "../../services/disciplinasService";
+import { useEffect, useState } from "react";
 
 const schema = z.object({
   nome: z.string().min(4, "Mínimo de 4 caracteres. Campo obrigatório."),
-  descricao: z
-    .string()
-    .min(4, "Mínimo de 4 caracteres. Campo obrigatório."),
-  createDate: z.string().min("Campo obrigatório."),
+  descricao: z.string().min(4, "Mínimo de 4 caracteres. Campo obrigatório."),
+  createDate: z.string().min(1, "Campo obrigatório."),
   codigoDisciplina: z.string().min(4, "Campo obrigatório."),
   professorResponsavel: z.string().min(4, "Campo obrigatório."),
-  prerequisitos: z.string().min("Campo obrigatório."),
+  prerequisitos: z.string().optional(),
   creditos: z
-  .string()
-  .min(1, "Campo obrigatório.")
-  .min("Campo obrigatório."),
-  horariosAulas: z.enum(["08:00", "10:00", "14:00", "16:00"]),
+    .string()
+    .optional()
+    .refine((value) => !isNaN(value) && Number(value) > 0, {
+      message: "Deve ser um número positivo.",
+    }),
+  horariosAulas: z.enum(
+    ["08:00-10:00", "10:00-12:00", "14:00-16:00", "16:00-18:00"],
+    {
+      errorMap: (issue, _ctx) => {
+        switch (issue.code) {
+          case "invalid_type":
+            return { message: "A seleção de horário é obrigatória." };
+          case "invalid_enum_value":
+            return { message: "A seleção de horário é obrigatória." };
+          default:
+            return { message: "Inválido." };
+        }
+      },
+    }
+  ),
 });
 
 const CustomForm = () => {
@@ -47,9 +64,40 @@ const CustomForm = () => {
   const navigate = useNavigate();
   const { disciplinas, setDisciplinas } = useDisciplinas();
   const toast = useToast();
+  const { usuario } = useAuth();
+  const [availableHorarios, setAvailableHorarios] = useState([
+    { value: "08:00-10:00", label: "08:00 - 10:00", disabled: false },
+    { value: "10:00-12:00", label: "10:00 - 12:00", disabled: false },
+    { value: "14:00-16:00", label: "14:00 - 16:00", disabled: false },
+    { value: "16:00-18:00", label: "16:00 - 18:00", disabled: false },
+  ]);
+
+  useEffect(() => {
+    const updatedHorarios = availableHorarios.map((horario) => {
+      const indisponivel = disciplinas.some(
+        (disciplina) => disciplina.horariosAulas === horario.value
+      );
+      return { ...horario, disabled: indisponivel };
+    });
+    setAvailableHorarios(updatedHorarios);
+  }, [disciplinas]);
+
+  useEffect(() => {
+    if (!usuario.logado) {
+      toast({
+        status: "warning",
+        title: "Você precisa estar logado para cadastrar uma disciplina.",
+      });
+      navigate("/logar-usuario");
+    }
+  }, []);
 
   async function onSubmit(values) {
-    const disciplinaAdd = values;
+    const disciplinaAdd = {
+      ...values,
+      creditos: Number(values.creditos),
+    };
+
     await criarDisciplina(disciplinaAdd);
 
     toast({
@@ -61,12 +109,7 @@ const CustomForm = () => {
   }
 
   return (
-    <Flex
-      justifyContent="center"
-      alignItems="center"
-      height="100vh"
-      bg="teal.50"
-    >
+    <Flex justifyContent="center" alignItems="center" bg="teal.50">
       <Box
         bg="white"
         p={8}
@@ -233,17 +276,22 @@ const CustomForm = () => {
             <FormLabel htmlFor="horariosAulas">Horários das aulas:</FormLabel>
             <Select
               id="horariosAulas"
-              placeholder="Selecione um horário"
+              placeholder="Escolha seu horário:"
               _focusVisible={{
                 borderColor: "teal.400",
                 boxShadow: "0 0 0 1px var(--chakra-colors-teal-400)",
               }}
               {...register("horariosAulas")}
             >
-              <option value="08:00">08:00</option>
-              <option value="10:00">10:00</option>
-              <option value="14:00">14:00</option>
-              <option value="16:00">16:00</option>
+              {availableHorarios.map((horario) => (
+                <option
+                  key={horario.value}
+                  value={horario.value}
+                  disabled={horario.disabled}
+                >
+                  {horario.label}
+                </option>
+              ))}
             </Select>
             <FormErrorMessage>
               {errors.horariosAulas && errors.horariosAulas.message}

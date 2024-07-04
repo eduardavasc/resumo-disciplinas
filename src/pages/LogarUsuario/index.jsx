@@ -68,6 +68,8 @@ const LogarUsuario = () => {
         toast({
           status: 'success',
           title: 'Usuário logado com sucesso.',
+          duration: 2000,
+          isClosable: true,
         });
         navigate('/');
       } else {
@@ -75,6 +77,8 @@ const LogarUsuario = () => {
         toast({
           status: 'error',
           title: 'Usuário não encontrado.',
+          duration: 2000,
+          isClosable: true,
         });
       }
     } catch (e) {

@@ -54,18 +54,24 @@ const CadastrarUsuario = () => {
         toast({
           status: 'success',
           title: 'Usuário criado com sucesso!',
+          duration: 2000,
+          isClosable: true,
         });
         navigate('/logar-usuario');
       } else {
         toast({
           status: 'error',
           title: 'Não foi possível criar o usuário, tente novamente mais tarde.',
+          duration: 2000,
+          isClosable: true,
         });
       }
     } catch (e) {
       toast({
         status: 'error',
         title: e.message,
+        duration: 2000,
+        isClosable: true,
       });
     }
   };

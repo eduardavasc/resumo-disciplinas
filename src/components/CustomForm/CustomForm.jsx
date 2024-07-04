@@ -29,7 +29,7 @@ const schema = z.object({
   codigoDisciplina: z.string().min(1, "Campo obrigatório."),
   professorResponsavel: z.string().min(4, "Campo obrigatório."),
   prerequisitos: z.string().optional(),
-  creditos: z.union([z.number().int().min(0), z.undefined()]).optional(),
+  creditos: z.union([z.number().int().positive().min(0), z.undefined(), z.nan()]).optional(),
   horariosAulas: z.enum(
     ["08:00-10:00", "10:00-12:00", "14:00-16:00", "16:00-18:00"],
     {

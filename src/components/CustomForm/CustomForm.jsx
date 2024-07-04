@@ -26,15 +26,10 @@ const schema = z.object({
   nome: z.string().min(4, "Mínimo de 4 caracteres. Campo obrigatório."),
   descricao: z.string().min(4, "Mínimo de 4 caracteres. Campo obrigatório."),
   createDate: z.string().min(1, "Campo obrigatório."),
-  codigoDisciplina: z.string().min(4, "Campo obrigatório."),
+  codigoDisciplina: z.string().min(1, "Campo obrigatório."),
   professorResponsavel: z.string().min(4, "Campo obrigatório."),
   prerequisitos: z.string().optional(),
-  creditos: z
-    .string()
-    .optional()
-    .refine((value) => !isNaN(value) && Number(value) > 0, {
-      message: "Deve ser um número positivo.",
-    }),
+  creditos: z.union([z.number().int().min(0), z.undefined()]).optional(),
   horariosAulas: z.enum(
     ["08:00-10:00", "10:00-12:00", "14:00-16:00", "16:00-18:00"],
     {
@@ -72,6 +67,10 @@ const CustomForm = () => {
     { value: "16:00-18:00", label: "16:00 - 18:00", disabled: false },
   ]);
 
+  const checkCodigoDisciplina = async (codigoDisciplina) => {
+    return disciplinas.some(disciplina => disciplina.codigoDisciplina === codigoDisciplina);
+  }
+
   useEffect(() => {
     const updatedHorarios = availableHorarios.map((horario) => {
       const indisponivel = disciplinas.some(
@@ -92,12 +91,29 @@ const CustomForm = () => {
     }
   }, []);
 
-  async function onSubmit(values) {
+  const onSubmit = async (values) => {
+    console.log(values)
+    if (!usuario.logado) {
+      toast({
+        status: "error",
+        title: "Você precisa estar logado para enviar o formulário.",
+      });
+      navigate("/login"); // Substitua "/login" pelo caminho correto para sua página de login
+      return;
+    }
+
+    const codigoExistente = await checkCodigoDisciplina(values.codigoDisciplina);
+    if (codigoExistente) {
+      toast({
+        status: "error",
+        title: "Código de disciplina já existe.",
+      });
+      return;
+    }
     const disciplinaAdd = {
       ...values,
-      creditos: Number(values.creditos),
+      creditos: values.creditos !== undefined ? Number(values.creditos) : undefined,
     };
-
     await criarDisciplina(disciplinaAdd);
 
     toast({
@@ -105,8 +121,9 @@ const CustomForm = () => {
       title: "Disciplina cadastrada com sucesso!",
     });
 
-    navigate("/");
-  }
+    navigate("/");}
+
+    
 
   return (
     <Flex justifyContent="center" alignItems="center" bg="teal.50">
@@ -257,12 +274,15 @@ const CustomForm = () => {
             <Input
               id="creditos"
               type="number"
-              placeholder="Créditos"
+              
               _focusVisible={{
                 borderColor: "teal.400",
                 boxShadow: "0 0 0 1px var(--chakra-colors-teal-400)",
               }}
-              {...register("creditos")}
+              {...register("creditos", {
+                valueAsNumber: true,
+            
+              })}
             />
             <FormErrorMessage>
               {errors.creditos && errors.creditos.message}
